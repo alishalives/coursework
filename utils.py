@@ -3,8 +3,8 @@ import json
 
 class Data:
     def __init__(self, posts_path, comments_path):
-        # if type(posts_path) or type(comments_path) != json:
-        #     raise TypeError("Файлы должны быть json-формата!")
+        if posts_path.split(".")[-1] != "json" or comments_path.split(".")[-1] != "json":
+            raise TypeError("Файлы должны быть json-формата!")
         self.posts_path = posts_path
         self.comments_path = comments_path
 
@@ -55,24 +55,22 @@ class Data:
 
     # Функция возвращает список постов по ключевому слову
     def search_for_posts(self, query):
-        if str(query).isdigit():
-            return "Ошибка"
-
+        if type(query) != str:
+            raise TypeError("Введите корректное значение для поиска постов, содержащих введенную фразу")
         posts = self.get_posts_all()
         query_posts = [post for post in posts if query.lower() in post["content"].lower()]
         return query_posts
 
     # Функция возвращает пост по его идентификатору
     def get_post_by_pk(self, pk):
-        if str(pk).isalpha():
-            return "Ошибка"
-
+        if type(pk) != int:
+            raise TypeError("Введите корректное значения для поиска поста по номеру")
         posts = self.get_posts_all()
         pk_post = [post for post in posts if post["pk"] == int(pk)]
         return pk_post
 
 
-a = Data("./data/posts.json", "./data/comments.json")
+# a = Data("./data/posts.json", "./data/comments.json")
 # print(len(a.get_posts_all()))
 # print(a.get_comments_by_post_id('5'))
 # print(a.get_posts_by_user("leo"))
